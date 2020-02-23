@@ -1,5 +1,6 @@
 import os
 import music21
+import keras
 from music21 import converter, instrument, note, chord
 import numpy as np
 
@@ -7,19 +8,6 @@ songpath_solo = "./songdata/solo/Trumpet in Bb"
 
 # credit to Clara's music generator for this encoding method
 def create_chordwise_rep(midi, maxNote, numInstruments, sampleRate):
-    # parse_notes = None
-    # parts = instrument.partitionByInstrument(midi)
-    # if parts:
-    #     parse_notes = parts.parts[0].recurse()
-    # else:
-    #     parse_notes = midi.flat.notesAndRests
-    #
-    # for element in parse_notes:
-    #     # print(element)
-    #     # print(element.duration.quarterLength)
-    #     # print(element.offset)
-    #     if isinstance(element, note.Note):
-    #         print(element.pitch.midi)
     maxTime = int(np.floor(midi.duration.quarterLength * sampleRate) + 1)
     score = np.zeros((maxTime, numInstruments, maxNote))
 
@@ -93,15 +81,18 @@ def convert_sequence_to_int(sequence, convert_dict):
             encodings.append(convert_dict[token])
     return encodings
 
-def build_dataset(sequences, sequence_length = 40):
+def build_dataset(sequences, sequence_length = 50):
     input = []
     output = []
     for sequence in sequences:
         for i in range(0, len(sequence) - sequence_length):
             input.append(sequence[i:i+sequence_length])
             output.append(sequence[i+sequence_length])
-    print(input)
-    print(output)
+
+    num_examples = len(input)
+    X = np.asarray(input, dtype=int).reshape((num_examples, sequence_length, 1))
+    y = keras.utils.to_categorical(output)
+    return X, y
 
 def collect_solo_songs(convert_dict, max_note, num_instruments, sample_rate):
     note_seqs = []
