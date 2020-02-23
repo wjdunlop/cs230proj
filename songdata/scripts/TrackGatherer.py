@@ -29,7 +29,7 @@ def retrieve(filename, pref):
 
 midis = []
 
-for i in range(3221, 12000):
+for i in range(4500, 12000):
 
 	print(i)
 	user_agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'
