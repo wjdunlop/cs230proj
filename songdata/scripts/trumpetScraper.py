@@ -3,6 +3,7 @@ import urllib.request, urllib.error, urllib.parse
 
 import requests
 fullList = []
+
 a = int(input("from\n> "))
 b = int(input("to\n> "))
 def retrieve(filename, pref):
@@ -15,7 +16,8 @@ def retrieve(filename, pref):
 			myfile = requests.get(url)
 		except Exception as e:
 			return url			
-		
+
+
 		name = re.findall('[\w_]*\.mid', filename)
 		# 
 		print("name")
@@ -24,16 +26,20 @@ def retrieve(filename, pref):
 		# print("downloaded")
 				
 		print("done!")
+
 		return 0
+
 
 user_agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'
 values = {'name': 'Michael Foord',
           'location': 'Northampton',
           'language': 'Python' }
 headers = {'User-Agent': user_agent}
+
 missedList = []
 
 for i in range(a,b):
+
 	print(i,' ',len(fullList), flush = True, end = '\r')
 	url = 'https://www.8notes.com/trumpet/sheet_music/?page='+str(i)+'&orderby=5d'
 	rexp = 'href="/scores/(\d{3,6})'
