@@ -5,8 +5,7 @@ from keras.layers import LSTM
 from keras.layers import Activation
 from keras.callbacks import ModelCheckpoint
 
-
-def train(X, y, encoding_size):
+def get_model(X, encoding_size):
     model = Sequential()
     model.add(LSTM(
         256,
@@ -22,6 +21,10 @@ def train(X, y, encoding_size):
     model.add(Dense(encoding_size))
     model.add(Activation('softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam')
+    return model
+
+def train(X, y, encoding_size):
+    model = get_model(encoding_size)
     filepath = "weights.{epoch:02d}-{loss:.4f}.hdf5"
     checkpoint = ModelCheckpoint(
         filepath, monitor='loss',
