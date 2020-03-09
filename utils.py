@@ -1,3 +1,5 @@
+import music21
+
 def build_convert_dict(max_note, instruments, sample_rate):
     convert_keys = []
     for instrument in instruments:

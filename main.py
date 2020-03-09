@@ -2,6 +2,7 @@ import datacollector
 import generate
 import train
 import utils
+import music21
 
 def main():
     max_note = 127
@@ -13,10 +14,16 @@ def main():
     X, y = datacollector.collect_solo_songs(encoder, max_note, len(instruments), sample_rate)
 
     # uncomment the below for training
-    # train.train(X, y, encoding_size)
+    train.train(X, y, encoding_size)
 
     # uncomment the below for generation
-    encoded_notes = generate.generate(X, 100, 'weights.02-2.2507.hdf5', encoding_size, num_notes)
+    # encoded_notes = generate.generate(X, 100, 'weights.02-2.2507.hdf5', encoding_size, num_notes)
+    # print(encoded_notes)
+    # outputs_tokens = generate.convert_int_to_sequence(encoded_notes, decoder)
+    # print(outputs_tokens)
+    # outputs_notes = generate.sequence_to_notes(outputs_tokens, sample_rate)
 
+    # outputs_notes.write('midi', fp='testoutput.midi')
+	
 if __name__ == "__main__":
     main()

@@ -3,7 +3,7 @@ import music21
 import keras
 from music21 import converter, instrument, note, chord
 import numpy as np
-
+import music21
 songpath_solo = "./songdata/solo/Trumpet in Bb"
 
 # credit to Clara's music generator for this encoding method
