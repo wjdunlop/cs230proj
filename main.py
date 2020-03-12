@@ -2,7 +2,9 @@ import datacollector
 import generate
 import train
 import utils
-import music21
+
+import numpy as np
+from sklearn.model_selection import train_test_split
 
 def main():
     max_note = 127
@@ -13,8 +15,13 @@ def main():
     encoder, decoder = utils.build_convert_dict(max_note, instruments, sample_rate)
     X, y = datacollector.collect_solo_songs(encoder, max_note, len(instruments), sample_rate)
 
+    X_t, X_test, y_t, y_test = train_test_split(X, y, test_size=0.10, random_state=49)
+    X_train, X_val, y_train, y_val = train_test_split(X_t, y_t, test_size=0.10, random_state=7)
+    print(X.shape, X_t.shape, X_test.shape, X_train.shape, X_val.shape)
+
+
     # uncomment the below for training
-    train.train(X, y, encoding_size)
+    # train.train(X_train, y_train, encoding_size)
 
     # uncomment the below for generation
     # encoded_notes = generate.generate(X, 100, 'weights.02-2.2507.hdf5', encoding_size, num_notes)

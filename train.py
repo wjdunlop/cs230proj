@@ -20,7 +20,7 @@ def get_model(X, encoding_size):
     model.add(Dropout(0.3))
     model.add(Dense(encoding_size))
     model.add(Activation('softmax'))
-    model.compile(loss='categorical_crossentropy', optimizer='adam')
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
 def train(X, y, encoding_size):
