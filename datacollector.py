@@ -81,20 +81,36 @@ def convert_sequence_to_int(sequence, convert_dict):
             encodings.append(convert_dict[token])
     return encodings
 
-def build_dataset(sequences, sequence_length = 50):
+
+def append_modulations(input, output, input_seq, output_seq, wait_token_begin, augment_dataset):
+    input.append(input_seq)
+    output.append(output_seq)
+    if augment_dataset:
+        original_input = np.asarray(input_seq)
+        for modulation in range(-5, 7):
+            augmented_input = np.where(original_input < wait_token_begin, original_input + modulation, original_input)
+            augmented_output = output_seq + modulation if output_seq < wait_token_begin else output_seq
+            # if sequence is all rests, avoid weighting this too heavily by inserting 12 times
+            if np.array_equal(augmented_input, original_input) and augmented_output == output_seq:
+                continue
+            input.append(augmented_input.tolist())
+            output.append(augmented_output)
+
+def build_dataset(sequences, wait_token_begin, sequence_length, augment_dataset):
     input = []
     output = []
     for sequence in sequences:
         for i in range(0, len(sequence) - sequence_length):
-            input.append(sequence[i:i+sequence_length])
-            output.append(sequence[i+sequence_length])
+            append_modulations(input, output, sequence[i:i+sequence_length], sequence[i+sequence_length],
+                               wait_token_begin, augment_dataset)
 
     num_examples = len(input)
     X = np.asarray(input, dtype=int).reshape((num_examples, sequence_length, 1))
-    y = keras.utils.to_categorical(output)
+    y = keras.utils.to_categorical(output, num_classes=wait_token_begin + 24)
     return X, y
 
-def collect_solo_songs(convert_dict, max_note, num_instruments, sample_rate):
+def collect_solo_songs(convert_dict, max_note, num_instruments, sample_rate, sequence_length, augment_dataset):
+    wait_token_begin = convert_dict["wait1"]
     note_seqs = []
     for _, _, files in os.walk(songpath_solo):
         for file in files:
@@ -104,4 +120,4 @@ def collect_solo_songs(convert_dict, max_note, num_instruments, sample_rate):
             chordwise_seq = create_chordwise_rep(midi, max_note, num_instruments, sample_rate)
             note_seq = chords_to_notes(chordwise_seq, sample_rate)
             note_seqs.append(convert_sequence_to_int(note_seq, convert_dict))
-    return build_dataset(note_seqs)
+    return build_dataset(note_seqs, wait_token_begin, sequence_length, augment_dataset)
