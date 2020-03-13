@@ -24,13 +24,13 @@ def main():
     # train.train(X_train, y_train, encoding_size)
 
     # uncomment the below for generation
-    # encoded_notes = generate.generate(X, 100, 'weights.02-2.2507.hdf5', encoding_size, num_notes)
-    # print(encoded_notes)
-    # outputs_tokens = generate.convert_int_to_sequence(encoded_notes, decoder)
-    # print(outputs_tokens)
-    # outputs_notes = generate.sequence_to_notes(outputs_tokens, sample_rate)
+    encoded_notes = generate.generate(X, 100, 'weights.19-1.0584.hdf5', encoding_size, num_notes)
+    print(encoded_notes)
+    outputs_tokens = generate.convert_int_to_sequence(encoded_notes, decoder)
+    print(outputs_tokens)
+    outputs_notes = generate.sequence_to_notes(outputs_tokens, sample_rate)
 
-    # outputs_notes.write('midi', fp='testoutput.midi')
+    outputs_notes.write('midi', fp='testoutput10epochscase1.midi')
 	
 if __name__ == "__main__":
     main()

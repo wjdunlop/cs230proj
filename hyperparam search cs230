@@ -1,0 +1,22 @@
+hyperparam search cs230
+
+1
+lstm1: 256 
+lstm2: 256
+lstm3: 256
+dense: 256
+dropout: 0.3
+seq_len: def
+
+Epoch 10/200
+744921/744921 [==============================] - 1865s 3ms/step - loss: 1.1847 - accuracy: 0.6198
+
+
+
+2
+lstm1: 128
+lstm2: 128
+lstm3: 128
+dense: 256
+dropout: 0.3
+seq_len: def
