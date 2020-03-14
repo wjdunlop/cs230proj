@@ -9,24 +9,26 @@ def generate(X, gen_length, weights_name, encoding_size, num_notes):
     initial_seq_idx = np.random.randint(X.shape[0])
     sequence = X[initial_seq_idx]
 
-    sequence = sequence.reshape(1, sequence.shape[0], sequence.shape[1])
+    num_instruments = sequence.shape[1]
+    sequence = sequence.reshape(1, sequence.shape[0], num_instruments)
+    output = []
     for i in range(gen_length):
         print(i, '/', gen_length, end = '\r', flush = True)
         prediction = model.predict(sequence)
         new_elem = np.argmax(prediction)
         sequence[:, 0:sequence.shape[1] - 1, :] = sequence[:, 1:, :]
         sequence[:, sequence.shape[1] - 1, :] = new_elem
-    return sequence
+        output.append(new_elem)
+    return output
 
 def convert_int_to_sequence(note_seq, decoder):
-    
-    note_seq = note_seq.tolist()
+
     print(note_seq)
     
     tokenSeq = []
-    for note in note_seq[0]:
+    for note in note_seq:
         # print(decoder)
-        n = decoder[note[0]]
+        n = decoder[note]
         tokenSeq.append(n)
     # print(tokenSeq)
     return tokenSeq
