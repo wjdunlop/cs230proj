@@ -11,6 +11,7 @@ def generate(X, gen_length, weights_name, encoding_size, num_notes):
 
     sequence = sequence.reshape(1, sequence.shape[0], sequence.shape[1])
     for i in range(gen_length):
+        print(i, '/', gen_length, end = '\r', flush = True)
         prediction = model.predict(sequence)
         new_elem = np.argmax(prediction)
         sequence[:, 0:sequence.shape[1] - 1, :] = sequence[:, 1:, :]
@@ -70,7 +71,7 @@ def sequence_to_notes(score, sample_freq):
             add_wait = 0
 
             try: 
-                print(score[i][1:])
+                # print(score[i][1:])
                 new_note=music21.note.Note(int(score[i][1:]))
 
                 new_note.duration = music21.duration.Duration(duration*speed)

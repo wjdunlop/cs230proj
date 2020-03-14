@@ -15,6 +15,12 @@ def get_model(X, encoding_size):
     model.add(Dropout(0.3))
     model.add(LSTM(256, return_sequences=True))
     model.add(Dropout(0.3))
+    
+    #
+    model.add(LSTM(256))
+    model.add(Dropout(0.3))
+    #
+
     model.add(LSTM(256))
     model.add(Dense(256))
     model.add(Dropout(0.3))
