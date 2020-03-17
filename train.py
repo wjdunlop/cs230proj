@@ -6,6 +6,7 @@ from keras.layers import Activation
 from keras.callbacks import ModelCheckpoint
 
 def get_model(X, encoding_size):
+    print("gettig model")
     model = Sequential()
     model.add(LSTM(
         256,
@@ -15,11 +16,11 @@ def get_model(X, encoding_size):
     model.add(Dropout(0.3))
     model.add(LSTM(256, return_sequences=True))
     model.add(Dropout(0.3))
+
     
-    #
-    model.add(LSTM(256))
-    model.add(Dropout(0.3))
-    #
+    # model.add(LSTM(256, return_sequences=True))
+    # model.add(Dropout(0.3))
+    
 
     model.add(LSTM(256))
     model.add(Dense(256))
@@ -30,8 +31,13 @@ def get_model(X, encoding_size):
     return model
 
 def train(X, y, encoding_size):
+    #5 epoc
+    #another LSTM
     model = get_model(X, encoding_size)
-    filepath = "weights.{epoch:02d}-{loss:.4f}.hdf5"
+    print("load weights start")
+    model.load_weights('weights.49-0.8625.hdf5')
+    print("load weights done")
+    filepath = "seq50CONT.{epoch:02d}-{loss:.4f}.hdf5"
     checkpoint = ModelCheckpoint(
         filepath, monitor='loss',
         verbose=0,
@@ -39,4 +45,4 @@ def train(X, y, encoding_size):
         mode='min'
     )
     callbacks_list = [checkpoint]
-    model.fit(X, y, epochs=200, batch_size=64, callbacks=callbacks_list)
+    model.fit(X, y, epochs=10000, batch_size=64, callbacks=callbacks_list)
