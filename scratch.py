@@ -1,8 +1,12 @@
-import numpy as np
-k = np.random.random((5,5))
-k = np.array([[1,4],[2,3]])
-print(k)
-print(k.argmax(axis = 1))
+# import numpy as np
+# k = np.random.random((5,5))
+# k = np.array([[1,4],[2,3]])
+# print(k)
+# print(k.argmax(axis = 1))
+x = y = 1
+
+print(x)
+print(y)
 
 # print(a)
 

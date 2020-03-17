@@ -33,9 +33,9 @@ def plot_confusion_matrix(save_name, y_true, y_pred, normalize=False, title=None
             title = 'Normalized confusion matrix'
         else:
             title = 'Confusion matrix, without normalization'
-    print('plotting confusion matrix')
+
     # Compute confusion matrix
-    cm = confusion_matrix(y_true, y_pred)
+    cm = confusion_matrix(y_true, y_pred, labels = np.arange(1,281))
     # Only use the labels that appear in the data
     # classes = ['0 (C)', '1 (C#)', '2 (D)', '3 (D#)', '4 (E)', '5 (F)', '6 (F#)','7 (G)', '8 (G#)', '9 (A)', '10 (A#)', '11 (B)']
     if normalize:
@@ -44,16 +44,16 @@ def plot_confusion_matrix(save_name, y_true, y_pred, normalize=False, title=None
     else:
         print('Confusion matrix, without normalization')
 
-    print(cm.tolist())
+    print(cm)
 
-    fig, ax = plt.subplots(figsize = (20,20))
+    fig, ax = plt.subplots(figsize = (60, 60))
     im = ax.imshow(cm, interpolation='nearest', cmap=cmap)
     ax.figure.colorbar(im, ax=ax)
     # We want to show all ticks...
     ax.set(xticks=np.arange(cm.shape[1]),
            yticks=np.arange(cm.shape[0]),
            # ... and label them with the respective list entries
-           # xticklabels=classes, yticklabels=classes,
+           xticklabels=np.arange(1,281), yticklabels=np.arange(1,281),
            title=title,
            ylabel='True label',
            xlabel='Predicted label')
